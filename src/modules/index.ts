@@ -1,2 +1,2 @@
-import user from './user'
-export default [user]
+import auth from './auth/router'
+export default [auth]

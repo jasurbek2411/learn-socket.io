@@ -1,3 +1,5 @@
 export const MODULE_ROUTES = {
-    user: '/user'
+    userSignup: '/auth/signup',
+    userLogin: '/auth/login',
+    userLogout: '/auth/logout',
 }
