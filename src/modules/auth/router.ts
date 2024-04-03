@@ -9,6 +9,6 @@ router.route(MODULE_ROUTES.userSignup).post(signup)
 
 router.route(MODULE_ROUTES.userLogin).post(login)
 
-router.route(MODULE_ROUTES.userLogout).get(logout)
+router.route(MODULE_ROUTES.userLogout).post(logout)
 
 export default router
