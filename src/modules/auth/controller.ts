@@ -1,8 +1,11 @@
 import User from '@/models/user.model'
 import { Request, Response } from 'express'
 import * as bcryptjs from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import * as mongoose from 'mongoose'
+
+const secretKey = process.env.JWT_SECRET! || 'ffffdsfa342'
+
 
 export const signup = async (req: Request, res: Response) => {
     try {
@@ -116,9 +119,7 @@ export const logout = async (req: Request, res: Response) => {
     }
 }
 
-
 const generateTokens = (userId: mongoose.Types.ObjectId) => {
-    const secretKey = process.env.JWT_SECRET || '897fshakjsdf'
     const accessToken = jwt.sign({ userId }, secretKey, {
         expiresIn: '1d',
     })
@@ -129,4 +130,19 @@ const generateTokens = (userId: mongoose.Types.ObjectId) => {
     return {
         accessToken, refreshToken
     }
-}   
+}
+
+export const generateAccessToken = async (req: Request, res: Response) => {
+    const refreshToken = req.cookies['refreshToken']
+    const { userId } = jwt.verify(refreshToken, secretKey) as JwtPayload
+
+    const user = await User.findById({ _id: userId })
+    if (!user) {
+        return res.status(404).json({ error: 'Invalid token!' })
+    }
+
+    const { accessToken } = generateTokens(user._id)
+
+    res.status(200).json({ accessToken })
+
+}

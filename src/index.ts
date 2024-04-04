@@ -4,6 +4,7 @@ import { config } from 'dotenv'
 import bodyParser from 'body-parser'
 import modules from './modules'
 import connectToMongo from './db/connection'
+import cookieParser from 'cookie-parser'
 
 config()
 
@@ -11,6 +12,8 @@ const PORT = process.env.PORT || 4000
 const app = express()
 
 app.use(bodyParser.json())
+app.use(cookieParser());
+
 app.use('/api', modules)
 
 function start() {
