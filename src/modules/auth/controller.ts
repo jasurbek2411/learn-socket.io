@@ -3,8 +3,8 @@ import { Request, Response } from 'express'
 import * as bcryptjs from 'bcryptjs'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import * as mongoose from 'mongoose'
+import { JwtSecretKey } from '@/constants'
 
-const secretKey = process.env.JWT_SECRET! || 'ffffdsfa342'
 
 
 export const signup = async (req: Request, res: Response) => {
@@ -120,10 +120,10 @@ export const logout = async (req: Request, res: Response) => {
 }
 
 const generateTokens = (userId: mongoose.Types.ObjectId) => {
-    const accessToken = jwt.sign({ userId }, secretKey, {
+    const accessToken = jwt.sign({ userId }, JwtSecretKey, {
         expiresIn: '1d',
     })
-    const refreshToken = jwt.sign({ userId }, secretKey, {
+    const refreshToken = jwt.sign({ userId }, JwtSecretKey, {
         expiresIn: '7d',
     })
 
@@ -134,7 +134,7 @@ const generateTokens = (userId: mongoose.Types.ObjectId) => {
 
 export const generateAccessToken = async (req: Request, res: Response) => {
     const refreshToken = req.cookies['refreshToken']
-    const { userId } = jwt.verify(refreshToken, secretKey) as JwtPayload
+    const { userId } = jwt.verify(refreshToken, JwtSecretKey) as JwtPayload
 
     const user = await User.findById({ _id: userId })
     if (!user) {

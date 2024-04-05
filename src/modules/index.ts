@@ -1,2 +1,3 @@
-import auth from './auth/router'
-export default [auth]
+import auth from './auth'
+import messages from './messages'
+export default [auth, messages]
