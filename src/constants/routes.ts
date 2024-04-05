@@ -4,5 +4,8 @@ export const MODULE_ROUTES = {
     userLogout: '/auth/logout',
     generateAccessToken: '/auth/generate-access-token',
 
-    sendMessage: '/message/send/:id'
+    sendMessage: '/message/send/:id',
+    getMessages: '/messages/:id',
+    getUsers: '/users',
+    getOne: '/users/:username',
 }
